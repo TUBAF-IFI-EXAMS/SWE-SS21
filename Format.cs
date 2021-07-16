@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
 using System.Collections;
-using System.Collections.Generic;
+
    
 
 interface Ixml : IEnumerable {
@@ -40,6 +40,8 @@ class Paragraph : Ixml {
 class fString {
     public String Text{get; set;}
 
+//Size saved as byte, because only small numbers are needed
+//Division allows use of 0.5 increments in size
     private byte size = 20;
 
     public double GetSize() => (double)(size/2);
@@ -60,25 +62,29 @@ class fString {
             }
     } */ //Legacy implementation as property; new Get-/ Set-Method to allow overload
 
-    private Color highlight = Color.White;
+    private Color highlight = Color.White; //Color set to black on white by default
     private Color textcolor = Color.Black; 
 
-    private string GetColor(Color color){
+//Private Get and Set for Colors, because Highlight and Font Color Properties share same pattern
+    private string GetColor(Color color){            
         int aux = ColorTranslator.ToWin32(color);
         return aux.ToString("X6");
     }
     private Color SetColor(string value){
-        int ColorValue = int.Parse(value, System.Globalization.NumberStyles.HexNumber);
-        return ColorTranslator.FromWin32(ColorValue);
+        int ColorValue;
+        if(int.TryParse(value, System.Globalization.NumberStyles.HexNumber, null, out ColorValue )){
+            return ColorTranslator.FromWin32(ColorValue); 
+        }
+        return Color.FromName(value);
     }
-
+//Access through Properties
     public string Highlight {get => GetColor(highlight);
                             set => highlight = SetColor(value);
                             } 
     public string TextColor {get => GetColor(textcolor);
                             set => textcolor = SetColor(value);
                             } 
-
+//Initializes FormatFlags as 0 for "Normal"
     private FormatFlags format=0;
     public string GetFormat() => format.ToString();
 
