@@ -2,36 +2,66 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
+   
+
+interface Ixml : IEnumerable {
+
+}
+
+class Paragraph : Ixml {
+    private fString[] Content;
+    public fString this[int i]
+   {
+      get { return Content[i]; }
+      set { Content[i] = value; }
+   }
+    public int Length {get => Content.Length;}
+    public bool isList{get; private set; }
+    public string Print(){
+        throw new NotImplementedException();
 
 
-[Flags] enum FormatFlags {
-    bold = 1,
-    italic = 2,
-    underlined = 4,
-    crossed = 8,
-    math = 16
+    }
 
-}      
+    public Paragraph(fString[] Content, bool isList){
+        this.Content = Content;
+        this.isList = isList;
+    }
+    public Paragraph(fString[] Content){
+        this.Content = Content;
+        this.isList = false;
+    }
 
-interface Ixml {
-    public string ToString();
+    public IEnumerator GetEnumerator() => Content.GetEnumerator();
+
+
 }
 
 class fString {
-    public String Text{get; protected set;}
+    public String Text{get; set;}
 
-    private byte size;
-    public double Size{
-        get => (float)size/2;
+    private byte size = 20;
+
+    public double GetSize() => (double)(size/2);
+    public void SetSize(double value) {
+        if(value <= 0) throw new ArgumentOutOfRangeException($"Font size of {value} could not be assigned");
+         if(value > 127.5) size = 255;
+         else size = Convert.ToByte(value*2);
+    }
+    public void SetSize(string value) => SetSize(Convert.ToDouble(value));
+
+
+   /* public double Size{
+        get => (double)(size/2);
         set {   
              if(value <= 0) throw new ArgumentOutOfRangeException($"Font size of {value} could not be assigned");
              if(value > 127.5) size = 255;
              else size = Convert.ToByte(value*2);     
             }
-    }
+    } */ //Legacy implementation as property; new Get-/ Set-Method to allow overload
 
-    private Color highlight;
-    private Color textcolor; 
+    private Color highlight = Color.White;
+    private Color textcolor = Color.Black; 
 
     private string GetColor(Color color){
         int aux = ColorTranslator.ToWin32(color);
@@ -43,20 +73,20 @@ class fString {
     }
 
     public string Highlight {get => GetColor(highlight);
-                            protected set => highlight = SetColor(value);
+                            set => highlight = SetColor(value);
                             } 
     public string TextColor {get => GetColor(textcolor);
-                            protected set => textcolor = SetColor(value);
+                            set => textcolor = SetColor(value);
                             } 
 
     private FormatFlags format=0;
-    public string Format {get => format.ToString();
-                          set {
-                           throw new NotImplementedException("Set not implemented due to dependency on XML-Parse functions");
-                          }
-    }
+    public string GetFormat() => format.ToString();
 
-                             
+    public void AddFormat(FormatFlags flag) => format |= flag;
+         
+    public void RemoveFormat(FormatFlags flag) => format &= ~flag; //In case we ever implement an editor, this can remove formatting
+    public void RemoveFormat() => format = 0;
 
+   
 }
 
