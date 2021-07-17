@@ -16,25 +16,25 @@ partial class XmlParse{
         ZipArchive Source = ZipFile.OpenRead(path);
         string bodyPath = "word/document.xml";
         ZipArchiveEntry entry = Source.GetEntry(bodyPath);
-        if(entry is null) throw new DirectoryNotFoundException($"Could not find {bodyPath??"null"}");
+        if(entry is null) throw new DirectoryNotFoundException($"Could not find {bodyPath}");
         reader = XmlReader.Create(entry.Open());
     }
 
    
     
     
-    public Paragraph ReadSection() {
+    public bool ReadSection(out Paragraph resultParagraph) {
 
         
         bool isList = false;
         List<fString> fStringList = new List<fString>();
 
 //waits until a beginning paragraph
-        ScanUntil(ElementCondition(Paragraph, XmlNodeType.Element), ()=>reader.Read());
+        ScanUntil(ElementCondition(Paragraph, XmlNodeType.Element), ()=> reader.Read());
 //waits until a run
         ScanUntil(ElementCondition(Run, XmlNodeType.Element), ()=> {reader.Read();
-                                                      if(reader.Name == List) isList = true;});
-//        
+                                                                    if(reader.Name == List) isList = true;});
+//Until the paragraph ends, the reader will scan every run        
         ScanUntil(ElementCondition(Paragraph, XmlNodeType.EndElement), ()=>{
             if(Run.Equals(reader.Name)){
                 fString word = ScanRun();
@@ -43,7 +43,9 @@ partial class XmlParse{
               reader.Read();
         });
 
-        return new Paragraph(fStringList.ToArray(), isList);	
+        resultParagraph = new Paragraph(fStringList.ToArray(), isList);
+        reader.Read();
+        return reader.NodeType == XmlNodeType.Element;
   
     }
 //seperate function to make code more readible
@@ -72,6 +74,7 @@ partial class XmlParse{
         }
         
     } 
+//Legacy code that will be removed in final draft
 
  /* private void WaitForParagraph(){
         while(!(reader.Name == "w:p" && reader.NodeType == XmlNodeType.Element) && reader.Read());
