@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.IO;
 
    
 
@@ -9,6 +10,7 @@ interface Ixml : IEnumerable {
 }
 
 class Paragraph : Ixml {
+   
     private fString[] Content;
     public fString this[int i]
    {
@@ -17,10 +19,13 @@ class Paragraph : Ixml {
    }
     public int Length {get => Content.Length;}
     public bool isList{get; private set; }
-    public string Print(){
-        throw new NotImplementedException();
 
-
+    //writes Qti using a StreamWriter
+    public void WriteQti(StreamWriter sw){
+        string result = String.Empty;
+        foreach(fString fs in Content){
+            sw.Write(fs.ToQti());
+        }
     }
 
     public Paragraph(fString[] Content, bool isList){
@@ -38,12 +43,42 @@ class Paragraph : Ixml {
 }
 
 class fString {
+    //strings used in the tags for qti 
+    const string underline = "span style=\"text-decoration: underline;\"";
+    const string italic = "em";
+    const string bold = "strong";
+    const string color = "<span style=\"color: #";
+    const string cross = "span style=\"text-decoration: line-through;\"";
+    const string spanEnd = "</span>";
     public String Text{get; set;}
 
 //Size saved as byte, because only small numbers are needed
 //Division allows use of 0.5 increments in size
     private byte size = 20;
-
+//assigns corresponding tags and end tags, returns paragraph as QTI compatible string
+    public string ToQti(){
+            string Tags = color + TextColor.ToLower() + ";\">";
+            string EndTags = spanEnd;
+            if(format == FormatFlags.crossed){
+                Tags += "<"+cross+">";
+                EndTags += spanEnd + EndTags;
+            }
+            if(format == FormatFlags.bold){
+                Tags += "<"+bold+">";
+                EndTags += "</"+bold+">" + EndTags;
+            }
+            if(format == FormatFlags.italic){
+                Tags += "<"+italic+">";
+                EndTags = "</"+italic+">" + EndTags;
+            }
+            if(format == FormatFlags.underlined){
+                Tags += "<"+underline+">";
+                EndTags += spanEnd + EndTags;
+            }
+            string result = Tags + Text + EndTags;
+            return result;
+        }
+    
     public double GetSize() => (double)(size/2);
     public void SetSize(double value) {
         if(value <= 0) throw new ArgumentOutOfRangeException($"Font size of {value} could not be assigned");
@@ -85,7 +120,7 @@ class fString {
                             set => textcolor = SetColor(value);
                             } 
 //Initializes FormatFlags as 0 for "Normal"
-    private FormatFlags format=0;
+    public FormatFlags format{get; private set;} =0;
     public string GetFormat() => format.ToString();
 
     public void AddFormat(FormatFlags flag) => format |= flag;
@@ -95,4 +130,3 @@ class fString {
 
    
 }
-
