@@ -5,7 +5,9 @@ using System.IO.Compression;
 using System.Xml;
 
 
-partial class XmlParse{
+//Parser tools contains constants and methods for XmlParser
+public partial class XmlParser{
+    
 //constants for more readible code
     private const string Run = "w:r";
     private const string Paragraph = "w:p";
@@ -15,6 +17,8 @@ partial class XmlParse{
     private const string Size = "w:sz";
     private const string List = "w:numPr";
     private const string Highlight = "w:highlight";
+    private const string SecPr = "w:sectPr";
+    private const string Body = "w:sectPr";
     
 
     
@@ -43,7 +47,7 @@ partial class XmlParse{
             handler();
         }
     }
-    public XmlParse(string path){ 
+    public XmlParser(string path){ 
         SetSource(path);
     }
         
