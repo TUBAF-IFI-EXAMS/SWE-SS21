@@ -6,19 +6,22 @@ namespace tests
     public class UnitTest1
     {
         const string directory = "../../../tests/";
-        const string TestDocument = "Parser Test File.docx";
+        const string TestDocument = "ParserTestFile.docx";
+
         [Theory]
         [InlineData(TestDocument, 1)]
         [InlineData("LengthTest2.docx", 2)]
         [InlineData("LengthTest3.docx", 3)]
         public void RunLength(string path, int expected)
         {
+            int correct = 0; //counts correct runs
+            int runs = 0; //counts read runs
             var Scanner = new XmlParser(directory+path);
-            bool isCorrect = true;
             while(Scanner.ReadSection(out var Scan)){
-                if(Scan.Length != expected && Scan.Length != 0) isCorrect = false;
+                if(Scan.Length == expected) correct++;
+                if(Scan.Length != 0) runs++;
                 }
-            Assert.True(isCorrect);
+            Assert.True(correct == runs);
         }
         [Theory]
         [InlineData("MixedLength1.docx", new int[]{1,2,3,4})]
@@ -26,13 +29,13 @@ namespace tests
          public void MixedRunLength(string path, int[] expected)
         {
             var Scanner = new XmlParser(directory+path);
-            bool isCorrect = true;
+            int correct = 0;
             int i = 0;
             while(Scanner.ReadSection(out var Scan)){
-                if(Scan.Length != expected[i] && Scan.Length != 0) isCorrect = false;
+                if(Scan.Length == expected[i]) correct++;
                 if(Scan.Length != 0) i++;
                 }
-            Assert.True(isCorrect);
+            Assert.True(i==correct);
         }
         [Fact]
         public void ParagraphCount()
@@ -49,7 +52,7 @@ namespace tests
         private const string Highlight = "FFFF00";
         [Fact]
         public void Format(){
-            bool isCorrect = true;
+            int correct = 0;
             var Scanner = new XmlParser(directory+TestDocument);
             Paragraph Scan;
             FormatFlags[] formats = {FormatFlags.bold, FormatFlags.italic, FormatFlags.underlined, FormatFlags.crossed};
@@ -58,23 +61,23 @@ namespace tests
                 Scanner.ReadSection(out Scan);
                 if(Scan.Length != 0){
                     
-                    if(Scan[0].Format != formats[i]) isCorrect = false;
+                    if(Scan[0].Format == formats[i]) correct++;
                     i++;
                 }
             }
             Scanner.ReadSection(out Scan);
-            if(!Scan[0].GetSize().Equals(40)) isCorrect = false;
+            if(Scan[0].GetSize().Equals(40)) correct++;
 
             Scanner.ReadSection(out Scan);
-            if(Scan[0].TextColor != Color) isCorrect = false;
+            if(Scan[0].TextColor == Color) correct++;
 
             Scanner.ReadSection(out Scan);
-            if(Scan[0].Highlight != Highlight) isCorrect = false;
+            if(Scan[0].Highlight == Highlight) correct++;
 
             Scanner.ReadSection(out Scan);
-            if(Scan.isList == false) isCorrect = false;
+            if(Scan.isList) correct++;
 
-            Assert.True(isCorrect);
+            Assert.True(correct==8);
         }
     }
 }
