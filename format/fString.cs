@@ -62,21 +62,21 @@ public class fString {
     public string ToQti(){
             string Tags = color + TextColor.ToLower() + ";\">";
             string EndTags = spanEnd;
-            if(Format == FormatFlags.crossed){
+            if(Format.HasFlag(FormatFlags.crossed)){
                 Tags += "<"+cross+">";
-                EndTags += spanEnd + EndTags;
+                EndTags = spanEnd + EndTags;
             }
-            if(Format == FormatFlags.bold){
+            if(Format.HasFlag(FormatFlags.bold)){
                 Tags += "<"+bold+">";
-                EndTags += "</"+bold+">" + EndTags;
+                EndTags = "</"+bold+">" + EndTags;
             }
-            if(Format == FormatFlags.italic){
+            if(Format.HasFlag(FormatFlags.italic)){
                 Tags += "<"+italic+">";
                 EndTags = "</"+italic+">" + EndTags;
             }
-            if(Format == FormatFlags.underlined){
+            if(Format.HasFlag(FormatFlags.underlined)){
                 Tags += "<"+underline+">";
-                EndTags += spanEnd + EndTags;
+                EndTags = spanEnd + EndTags;
             }
             string result = Tags + Text + EndTags;
             return result;
