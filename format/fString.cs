@@ -2,6 +2,10 @@ using System;
 using System.Drawing;  
 
 public class fString {
+    //constructor
+    public fString(string Text) => this.Text = Text;
+    public fString(){}
+
     //strings used in the tags for qti 
     const string underline = "span style=\"text-decoration: underline;\"";
     const string italic = "em";
@@ -64,11 +68,11 @@ public class fString {
             string EndTags = spanEnd;
             if(Format == FormatFlags.crossed){
                 Tags += "<"+cross+">";
-                EndTags += spanEnd + EndTags;
+                EndTags = spanEnd + EndTags;
             }
             if(Format == FormatFlags.bold){
                 Tags += "<"+bold+">";
-                EndTags += "</"+bold+">" + EndTags;
+                EndTags = "</"+bold+">" + EndTags;
             }
             if(Format == FormatFlags.italic){
                 Tags += "<"+italic+">";
@@ -76,7 +80,7 @@ public class fString {
             }
             if(Format == FormatFlags.underlined){
                 Tags += "<"+underline+">";
-                EndTags += spanEnd + EndTags;
+                EndTags = spanEnd + EndTags;
             }
             string result = Tags + Text + EndTags;
             return result;
