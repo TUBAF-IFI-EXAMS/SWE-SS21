@@ -50,6 +50,7 @@ public partial class XmlParser{
 
 
     public XmlParser(string path){ 
+        /// Constructor from source path
         SetSource(path);
     }
         

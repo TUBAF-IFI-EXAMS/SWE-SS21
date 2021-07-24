@@ -1,10 +1,17 @@
 using System;
 using System.Drawing;  
 
+/** @brief Main class for saving read formatted Strings 
+ *  @details Contains Fields and Properties for formatting, \n
+ *           as well as Methods to help with output
+ **/
 public class fString {
     //constructor
+
+    /// Creates formatted String from Text
     public fString(string Text) => this.Text = Text;
-    public fString(){}
+    /// Creates blank formatted String
+    public fString(){}                                
 
     //strings used in the tags for qti 
     const string underline = "span style=\"text-decoration: underline;\"";
@@ -19,23 +26,42 @@ public class fString {
     private Color highlight = Color.White; //Color set to black on white by default
     private Color textcolor = Color.Black; 
 
-    public String Text{get; set;}
+    /// Property access to fString-Text
+    public String Text{get; set;} 
 
     //Access Colors through Properties
-    public string Highlight {get => GetColor(highlight);
-                            set => highlight = SetColor(value);
-                            } 
-    public string TextColor {get => GetColor(textcolor);
-                            set => textcolor = SetColor(value);
-                            }
-    //Get/ Set Methods
-    public double GetSize() => (double)(size);
+
+    /// Property access to Highlight Color \n
+    /// Takes name or RGB hex code of Color
+    ///
+    public string Highlight {get => GetColor(highlight);             
+                            set => highlight = SetColor(value);     
+                            }     
+    /// Property access to Highlight Color \n  
+    /// Takes name or RGB hex code of Color 
+    ///                               
+    public string TextColor {get => GetColor(textcolor);            
+                            set => textcolor = SetColor(value);    
+                            }                                       
+    
+    /// Get-Method for font size   
+    ///                                                                   
+    public double GetSize() => (double)(size);                        
     public void SetSize(double value) {
+        /// Set-Method for font size \n
+        /// Takes positive double, caps size at 255 \n
+        /// ArgumentOutOfRangeException() for negative numbers
+        ///
         if(value <= 0) throw new ArgumentOutOfRangeException($"Font size of {value} could not be assigned");
          if(value > 255) size = 255;
          else size = Convert.ToByte(value);
     }
-    public void SetSize(string value) => SetSize(Convert.ToDouble(value));
+    /// Set-Method for font size \n
+    /// Parses positive double from string, caps size at 255 \n
+    /// ArgumentOutOfRangeException() for negative numbers \n
+    /// FormatException() for non-number strings
+    ///
+    public void SetSize(string value) => SetSize(Convert.ToDouble(value));      
 
     //Private Get and Set for Colors, because Highlight and Font Color Properties share same pattern
     private string GetColor(Color color){            
@@ -54,31 +80,43 @@ public class fString {
 
  
 
-    //Tools for handling FormatFlags    
+    //Tools for handling FormatFlags \n    
     //Initializes FormatFlags as 0 for "Normal"
-    public FormatFlags Format{get; private set;} = 0;
+
+    /// Format of the fString
+    public FormatFlags Format{get; private set;} = 0; 
+    /// Returns FormatFlags as strings
     public string GetFormat() => Format.ToString();
+    //Removal/ addition methods, in case we ever implement an editor
+
+    /// Adds a specific FormatFlags flag
     public void AddFormat(FormatFlags flag) => Format |= flag;   
-    public void RemoveFormat(FormatFlags flag) => Format &= ~flag; //In case we ever implement an editor, this can remove formatting
-    public void RemoveFormat() => Format = 0;
+    /// Removes a specific FormatFlags flag
+    public void RemoveFormat(FormatFlags flag) => Format &= ~flag; 
+    /// Removes all FormatFlags
+    public void RemoveFormat() => Format = 0;                      
 
     //assigns corresponding tags and end tags, returns paragraph as QTI compatible string
     public string ToQti(){
+            /** @brief Conversion method to QTI
+            * @details Returns string with QTI tag formatting and Text \n
+            * Example @include ReadSection.cs */
+            
             string Tags = color + TextColor.ToLower() + ";\">";
             string EndTags = spanEnd;
-            if(Format == FormatFlags.crossed){
+            if(Format.HasFlag(FormatFlags.crossed)){
                 Tags += "<"+cross+">";
                 EndTags = spanEnd + EndTags;
             }
-            if(Format == FormatFlags.bold){
+            if(Format.HasFlag(FormatFlags.bold)){
                 Tags += "<"+bold+">";
                 EndTags = "</"+bold+">" + EndTags;
             }
-            if(Format == FormatFlags.italic){
+            if(Format.HasFlag(FormatFlags.italic)){
                 Tags += "<"+italic+">";
                 EndTags = "</"+italic+">" + EndTags;
             }
-            if(Format == FormatFlags.underlined){
+            if(Format.HasFlag(FormatFlags.underlined)){
                 Tags += "<"+underline+">";
                 EndTags = spanEnd + EndTags;
             }
