@@ -7,12 +7,15 @@ using System.IO.Compression;
 using System.Xml;
 
 
-
+/** @brief Class for input of OOXML (.docx) files
+ *  @details Contains the document source and Methods for reading the document
+ **/
 partial class XmlParser{
 
     private XmlReader reader;
 
     public void SetSource(string path) { //opens FileStream from document.xml in the ZIP archive
+        /// Sets a new path, opens docx ZIP archive, extracts text body
         ZipArchive Source = ZipFile.OpenRead(path);
         string bodyPath = "word/document.xml";
         ZipArchiveEntry entry = Source.GetEntry(bodyPath);
@@ -21,6 +24,11 @@ partial class XmlParser{
     }
 
     public bool ReadSection(out Paragraph resultParagraph) {
+        /** @brief Reads the next section of text
+        * @details Saves it as a Paragraph in out parameter \n
+                   Returns bool : true is there is more text to be read, false if end of text was reached \n \n
+        * Example @include ReadSection.cs */
+
         bool isList = false;
         List<fString> fStringList = new List<fString>();
 
