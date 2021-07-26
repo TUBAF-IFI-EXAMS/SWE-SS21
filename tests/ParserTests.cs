@@ -3,6 +3,10 @@ using Xunit;
 
 namespace tests
 {
+    //To run tests, be sure to delete 
+    //<GenerateProgramFile>false</GenerateProgramFile> inside a <PropertyGroup>
+    //in tests.csproj
+    
     public class UnitTest1
     {
         const string directory = "../../../tests/";
