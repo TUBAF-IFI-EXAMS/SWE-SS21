@@ -6,6 +6,8 @@ In dieser README Datei wird erklärt, wie der Parser verwendet wird und wo weite
 Die Dokumentation befindet auf der [GitHub Page](https://gelbeforelle.github.io/SWE-SS21/) dieses Repositories.
 Auch das [Wiki](https://github.com/gelbeforelle/SWE-SS21/wiki) beinhaltet nützliche Informationen.
 
+[Hier](https://github.com/gelbeforelle/SWE-SS21/wiki/Working-Features) ist eine Übersicht darüber, welche Features funktionieren und wo noch Probleme auftreten.
+
 ## 1 Praktisches Anwendungsziel
 
 In der Praxis soll WordToQti ermöglichen, aus speziell formatierten Word-Dokumenten sogenannte QTI-Tests zu erstellen, welche Online-Testplattformen lesen können.
@@ -41,5 +43,3 @@ Im letzten Schritt wird eine Output Methode aufgerufen. Diese Methode erweitert 
 Weiter Informationen zum Qti Output finden Sie [hier](https://github.com/gelbeforelle/SWE-SS21/wiki/Qti-Output).
 Einen wichtigen Anteil an der Ausgabe der QTI-Formatierung besitzen die Question-Klassen, welche jeweils eigene Methoden für die einzelnen Bestandteile von QTI-Tests besitzen.
 Beachten Sie hierbei auch den [Aufbau von QTI-Dokumenten](https://github.com/gelbeforelle/SWE-SS21/wiki/Struktur-der-Tests-auf-OPAL).
-
-
