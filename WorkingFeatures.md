@@ -13,15 +13,15 @@ Genaure Funktionsweisen der Features sind in der [README.md](https://github.com/
 * responseDeclaration ✔️
 * outcomeDeclarations ✔️
 * itemBody ❓
-* responseProcessing ❓
+* responseProcessing 🟡
+(responseProcessing beispielhaft für SingleChoice implementiert)
 
-## integrierte Tests 🟡❓
-theoretisch implementiert, Ausführbarkeit mit VS nicht möglich -> GUI
+## integrierte Tests ✔️
+Für XmlParser vorhanden, Ausführung steht im Konflikt zur GUI und ist im gui Branch daher deaktiviert
 
 ## Dokumentation 🟡
 * Beipsielcode (und Übersichten) -> Website: [githubPages](https://gelbeforelle.github.io/SWE-SS21/) ✔️
-* Tutorial/API für Nutzer -> GUI ❌
 
-### GUI mit VisualStudio ❌
+### GUI mit VisualStudio 🟡
 * bisher implementiert zur Eingabe von Dateipfaden
-* funktioniert leider nicht wegen nicht übereinstimmender Hintegrundsoftware
+* steht im Konflikt mit xUnit Tests und wird bis auf weiteres nicht mit main gemergt
