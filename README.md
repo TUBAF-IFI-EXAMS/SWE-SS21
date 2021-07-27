@@ -25,7 +25,7 @@ Weitere Informationen zum Parser und der Paragraph Klasse finden Sie [hier](http
 Sehen Sie sich dazu auch die Dokumentation zum [Parser](https://gelbeforelle.github.io/SWE-SS21/class_xml_parser.html) und den [Paragraphs](https://gelbeforelle.github.io/SWE-SS21/class_paragraph.html) an.
 
 ### 2.2 Konverter für Markierungen
-Im Konverter wird eine `Paragraph` Klasse nach Formatierungsschlüsseln untersucht und in eine `Question` Klasse zur Speicherung eines Tests umgewandelt.
+Im Konverter wird eine `Paragraph` Klasse nach Formatierungsschlüsseln untersucht und in eine [`Question` Klasse](https://github.com/gelbeforelle/SWE-SS21/wiki/Klassenstuktur-der-Fragen) zur Speicherung eines Tests umgewandelt.
 
 Weitere Informationen zur Question Klasse finden Sie hier. TODO
 Sehen Sie sich dazu auch die [Dokumentation](https://gelbeforelle.github.io/SWE-SS21/class_question.html) zu Questions an. 
