@@ -41,7 +41,7 @@ public class Paragraph : Ixml {
 }
 
 /// Extension class
-static class StreamParagraph{
+public static class StreamParagraph{
     //writes Qti using a StreamWriter
     static public void WriteQti(this StreamWriter sw, Paragraph p){
         /// Extension method for StreamWriter \n
